@@ -78,7 +78,6 @@ io.on('connection', socket => {
     socket.on('accept or decline', data => {
         if (data.reply === 'accept') {
             acceptedUsers.push(data.user);
-            acceptedUsersWithCreator.push(data.user);
         } 
 
         if (data.reply === 'decline') {
@@ -101,7 +100,6 @@ io.on('connection', socket => {
 
     socket.on('create new room', data => {
         room = uniqid(`${data.roomName}-`);
-        acceptedUsersWithCreator.push(data.roomCreator);
         io.sockets.emit('invite', { 
             roomID: room, 
             roomName: data.roomName,
