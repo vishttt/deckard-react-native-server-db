@@ -97,8 +97,7 @@ io.on('connection', socket => {
     socket.on('send new message', data => {
         let message = data.message;
         let user = data.user;
-        let alias = acceptedUsersAliases[user];
-        io.in(room).emit('received new message', { message, user, alias });
+        io.in(room).emit('received new message', { message, user });
     });
 
     socket.on('create new room', data => {
