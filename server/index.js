@@ -70,7 +70,7 @@ io.on('connection', socket => {
     // on listener
     console.log('connected to socket!', socket.id);
 
-    let room, addedUsers; 
+    let room, addedUsers, roomCreator; 
     let acceptedUsers = [];
     let aliasesCopy = aliases;
     let acceptedUsersAliases = {};
@@ -96,6 +96,7 @@ io.on('connection', socket => {
             for (let acceptedUser of acceptedUsers) {
                 acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
             }
+            acceptedUsersAliases[roomCreator] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
             io.sockets.emit('all users ready', { acceptedUsers });
         }
     })
@@ -109,6 +110,7 @@ io.on('connection', socket => {
 
     socket.on('create new room', data => {
         room = uniqid(`${data.roomName}-`);
+        roomCreator = data.roomCreator.toLowerCase();
         io.sockets.emit('invite', { 
             roomID: room, 
             roomName: data.roomName,
