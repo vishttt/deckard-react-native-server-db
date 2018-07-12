@@ -41,6 +41,30 @@ const server = app.listen(process.env.PORT || 8080, () => {
 });
 const io = require('socket.io')(server);
 
+const aliases = [
+    'HAL 9000',
+    'Android 18',
+    'AM',
+    'Marvin',
+    'Roy Batty',
+    'Pris',
+    'Rachael',
+    'C-3PO',
+    'Ash',
+    'T-800',
+    'T-1000',
+    'Data',
+    'Bishop',
+    'Johnny 5',
+    'Robocop',
+    'Rosie',
+    'Cortana',
+    'HK-47',
+    '2B',
+    'GlaDOS',
+    'SHODAN',
+    'Dolores'];
+
 // initial socket connection
 io.on('connection', socket => {
     // on listener
@@ -67,7 +91,7 @@ io.on('connection', socket => {
         }
 
         if (addedUsers.length - 1  === acceptedUsers.length) {
-            io.sockets.emit('all users ready');
+            io.sockets.emit('all users ready', { acceptedUsers });
         }
     })
 
