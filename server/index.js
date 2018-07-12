@@ -74,9 +74,6 @@ io.on('connection', socket => {
     let acceptedUsers = [];
     let aliasesCopy = aliases;
     let acceptedUsersAliases = {};
-    for (let acceptedUser of acceptedUsers) {
-        acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
-    }
 
     socket.on('accept or decline', data => {
         if (data.reply === 'accept') {
@@ -96,6 +93,9 @@ io.on('connection', socket => {
         }
 
         if (addedUsers.length - 1  === acceptedUsers.length) {
+            for (let acceptedUser of acceptedUsers) {
+                acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
+            }
             io.sockets.emit('all users ready', { acceptedUsers });
         }
     })
