@@ -88,7 +88,7 @@ io.on('connection', socket => {
             for (let acceptedUser of addedUsers) {
                 acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
             }
-            io.sockets.emit('all users ready', { acceptedUsersAliases });
+            io.sockets.emit('all users ready', { acceptedUsersAliases, acceptedUsers });
         }
     })
 
