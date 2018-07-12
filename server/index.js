@@ -70,33 +70,26 @@ io.on('connection', socket => {
     // on listener
     console.log('connected to socket!', socket.id);
 
-    let room, addedUsers, roomCreatorEmail; 
+    let room, addedUsers; 
     let acceptedUsers = [];
+    let acceptedUsersWithCreator = [];
     let aliasesCopy = aliases;
     let acceptedUsersAliases = {};
 
     socket.on('accept or decline', data => {
         if (data.reply === 'accept') {
             acceptedUsers.push(data.user);
-
-            // if (addedUsers.length === acceptedUsers.length) {
-            //     io.sockets.emit('all users ready');
-            // }
+            acceptedUsersWithCreator.push(data.user);
         } 
 
         if (data.reply === 'decline') {
             addedUsers.splice(addedUsers.indexOf(data.user), 1);
-
-            // if (addedUsers.length === acceptedUsers.length) {
-            //     io.sockets.emit('all users ready');
-            // }
         }
 
         if (addedUsers.length - 1  === acceptedUsers.length) {
-            for (let acceptedUser of acceptedUsers) {
+            for (let acceptedUser of acceptedUsersWithCreator) {
                 acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
             }
-            acceptedUsersAliases[roomCreatorEmail] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1);
             io.sockets.emit('all users ready', { acceptedUsersAliases });
         }
     })
@@ -110,7 +103,7 @@ io.on('connection', socket => {
 
     socket.on('create new room', data => {
         room = uniqid(`${data.roomName}-`);
-        roomCreatorEmail = data.roomCreator;
+        acceptedUsersWithCreator.push(data.roomCreator);
         io.sockets.emit('invite', { 
             roomID: room, 
             roomName: data.roomName,
