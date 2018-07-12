@@ -45,7 +45,7 @@ const aliases = [
     'HAL 9000',
     'Android 18',
     'AM',
-    'Marvin',
+    'Siri',
     'Roy Batty',
     'Pris',
     'Rachael',
@@ -54,7 +54,7 @@ const aliases = [
     'T-800',
     'T-1000',
     'Data',
-    'Bishop',
+    'Alexa',
     'Johnny 5',
     'Robocop',
     'Rosie',
@@ -72,6 +72,11 @@ io.on('connection', socket => {
 
     let room, addedUsers; 
     let acceptedUsers = [];
+    let aliasesCopy = aliases;
+    let acceptedUsersAliases = {};
+    for (let acceptedUser of acceptedUsers) {
+        acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(12)),1)
+    }
 
     socket.on('accept or decline', data => {
         if (data.reply === 'accept') {
@@ -96,8 +101,10 @@ io.on('connection', socket => {
     })
 
     socket.on('send new message', data => {
-        console.log('new message', data);
-        io.in(room).emit('received new message', data);
+        let message = data.message;
+        let user = data.user;
+        let alias = acceptedUsersAliases[user];
+        io.in(room).emit('received new message', { message, user, alias });
     });
 
     socket.on('create new room', data => {
