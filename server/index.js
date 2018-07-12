@@ -83,6 +83,7 @@ io.on('connection', socket => {
             roomName: data.roomName,
             addedUsers: data.addedUsers,
             roomCreator: data.roomCreator,
+            timer: data.timer
         });
         socket.join(room);
     });
