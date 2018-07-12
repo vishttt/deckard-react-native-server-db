@@ -118,7 +118,7 @@ io.on('connection', socket => {
 
     socket.on('user voted', data => {
         usersWhoVoted.push(data.userWhoVotedEmail);
-        if (usersWhoVoted.length === addedUsers.length) {
+        if (usersWhoVoted.length === addedUsers.length - 1) {
             io.sockets.emit('voting complete');
         }
     });
