@@ -73,6 +73,7 @@ io.on('connection', socket => {
     let acceptedUsers = [];
     let aliasesCopy = aliases;
     let acceptedUsersAliases = {};
+    let usersWhoVoted = [];
 
     socket.on('accept or decline', data => {
         if (data.reply === 'accept') {
@@ -113,5 +114,12 @@ io.on('connection', socket => {
         room = data.roomID;
         addedUsers = data.addedUsers;
         socket.join(room);
+    });
+
+    socket.on('user voted', data => {
+        usersWhoVoted.push(data.userWhoVotedEmail);
+        if (usersWhoVoted.length === acceptedUsers.length + 1) {
+            io.sockets.emit('voting complete');
+        }
     });
 });
