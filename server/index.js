@@ -59,10 +59,10 @@ const aliases = [
     'Rosie',
     'Cortana',
     'HK-47',
-    '2B',
     'GlaDOS',
     'SHODAN',
-    'Dolores'];
+    'Dolores',
+    '2B'];
 
 // initial socket connection
 io.on('connection', socket => {
@@ -86,7 +86,7 @@ io.on('connection', socket => {
 
         if (addedUsers.length - 1  === acceptedUsers.length) {
             for (let acceptedUser of addedUsers) {
-                acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(11)),1)
+                acceptedUsersAliases[acceptedUser] = aliasesCopy.splice(Math.floor(Math.random() * Math.floor(aliasesCopy.length)),1)
             }
             io.sockets.emit('all users ready', { acceptedUsersAliases, acceptedUsers });
         }
