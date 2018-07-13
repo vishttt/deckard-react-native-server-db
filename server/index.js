@@ -120,7 +120,7 @@ io.on('connection', socket => {
         usersWhoVoted.push(data.userWhoVotedEmail);
         console.log(usersWhoVoted);
         console.log(addedUsers);
-        if (usersWhoVoted.length === addedUsers.length + 1) {
+        if (usersWhoVoted.length === addedUsers.length - 1) {
             io.sockets.emit('voting complete');
         }
     });
